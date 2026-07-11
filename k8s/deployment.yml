@@ -3,7 +3,7 @@ kind: Deployment
 
 metadata:
   name: node-app
-  namespace: jenkins-demo
+  namespace: sonar-demo
 
 spec:
   replicas: 2
