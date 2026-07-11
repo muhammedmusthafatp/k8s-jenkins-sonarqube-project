@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: node-app
+  namespace: jenkins-demo
+
+spec:
+  replicas: 2
+
+  selector:
+    matchLabels:
+      app: node-app
+
+  template:
+    metadata:
+      labels:
+        app: node-app
+
+    spec:
+
+      imagePullSecrets:
+        - name: ecr-secret
+
+      containers:
+      - name: node-app
+        image: 369602465346.dkr.ecr.ap-south-2.amazonaws.com/k8s-jenkin-repo:v1
+        imagePullPolicy: Always
+
+        ports:
+        - containerPort: 3000
