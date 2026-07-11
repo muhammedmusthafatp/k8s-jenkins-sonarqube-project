@@ -24,7 +24,7 @@ spec:
 
       containers:
       - name: node-app
-        image: 369602465346.dkr.ecr.ap-south-2.amazonaws.com/k8s-jenkin-repo:v1
+        image: 369602465346.dkr.ecr.ap-south-2.amazonaws.com/k8s-jenkin-repo:${BUILD_NUMBER}
         imagePullPolicy: Always
 
         ports:
