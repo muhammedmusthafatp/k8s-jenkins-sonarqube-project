@@ -3,7 +3,7 @@ kind: Service
 
 metadata:
   name: node-service
-  namespace: jenkins-demo
+  namespace: sonar-demo
 
 spec:
   selector:
