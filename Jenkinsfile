@@ -49,9 +49,9 @@ pipeline {
 
                 sh '''
 
-                docker tag $IMAGE_NAME:latest $ECR_REPO:v1
+                docker tag $IMAGE_NAME:latest $ECR_REPO:${BUILD_NUMBER}
 
-                docker push $ECR_REPO:v1
+                docker push $ECR_REPO:${BUILD_NUMBER}
 
                 '''
 
