@@ -71,9 +71,9 @@ pipeline {
 
 				kubectl apply -f k8s/service.yml
 
-                kubectl rollout restart deployment/node-app -n jenkins-demo
+                kubectl rollout restart deployment/node-app -n sonar-demo
 
-                kubectl rollout status deployment/node-app -n jenkins-demo
+                kubectl rollout status deployment/node-app -n sonar-demo
 
                 '''
 
