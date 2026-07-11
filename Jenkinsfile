@@ -49,7 +49,7 @@ pipeline {
 
                 sh '''
 
-                docker tag $IMAGE_NAME:v1 $ECR_REPO:v1
+                docker tag $IMAGE_NAME:latest $ECR_REPO:v1
 
                 docker push $ECR_REPO:v1
 
