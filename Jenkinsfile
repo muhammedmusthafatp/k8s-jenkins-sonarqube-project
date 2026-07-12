@@ -59,14 +59,21 @@ pipeline {
         }
 
         stage('OWASP Dependency Check') {
-            steps {
+    steps {
 
-                dependencyCheck additionalArguments: '--scan . --failOnCVSS 7',
-                                odcInstallation: 'DependencyCheck'
+        sh '''
+        /opt/dependency-check/bin/dependency-check.sh \
+        --project NodeApp \
+        --scan . \
+        --format XML \
+        --format HTML \
+        --out . \
+        --failOnCVSS 7
+        '''
 
-                dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
-            }
-        }
+        dependencyCheckPublisher pattern: 'dependency-check-report.xml'
+    }
+}
 
         stage('Build Image') {
 
