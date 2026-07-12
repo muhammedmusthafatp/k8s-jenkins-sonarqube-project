@@ -5,16 +5,61 @@ pipeline {
     environment {
 
         IMAGE_NAME = "node-demo"
-
         AWS_REGION = "ap-south-2"
-
         ACCOUNT_ID = "369602465346"
-
         ECR_REPO = "${ACCOUNT_ID}.dkr.ecr.ap-south-2.amazonaws.com/k8s-jenkin-repo"
 
     }
 
     stages {
+
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Gitleaks Secret Detection') {
+            steps {
+                sh '''
+                gitleaks detect --source . --verbose
+                '''
+            }
+        }
+
+        stage('SonarQube Analysis') {
+            steps {
+                script {
+                    def scannerHome = tool 'SonarScanner'
+
+                    withSonarQubeEnv('SonarQube') {
+
+                        sh """
+                        ${scannerHome}/bin/sonar-scanner
+                        """
+
+                    }
+                }
+            }
+        }
+
+        stage('Quality Gate') {
+            steps {
+                timeout(time: 5, unit: 'MINUTES') {
+                    waitForQualityGate abortPipeline: true
+                }
+            }
+        }
+
+        stage('OWASP Dependency Check') {
+            steps {
+
+                dependencyCheck additionalArguments: '--scan . --failOnCVSS 7',
+                                odcInstallation: 'DependencyCheck'
+
+                dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
+            }
+        }
 
         stage('Build Image') {
 
@@ -22,6 +67,18 @@ pipeline {
 
                 sh '''
                 docker build -t $IMAGE_NAME .
+                '''
+
+            }
+
+        }
+
+        stage('Trivy Image Scan') {
+
+            steps {
+
+                sh '''
+                trivy image --exit-code 1 --severity HIGH,CRITICAL $IMAGE_NAME
                 '''
 
             }
@@ -66,12 +123,14 @@ pipeline {
                 sh '''
 
                 kubectl apply -f k8s/namespace.yml
-		
-				kubectl apply -f k8s/deployment.yml
 
-				kubectl apply -f k8s/service.yml
+                kubectl apply -f k8s/deployment.yml
 
-                kubectl rollout restart deployment/node-app -n sonar-demo
+                kubectl apply -f k8s/service.yml
+
+                kubectl set image deployment/node-app \
+                node-app=$ECR_REPO:${BUILD_NUMBER} \
+                -n sonar-demo
 
                 kubectl rollout status deployment/node-app -n sonar-demo
 
@@ -82,5 +141,4 @@ pipeline {
         }
 
     }
-
 }
