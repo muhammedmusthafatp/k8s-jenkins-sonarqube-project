@@ -142,7 +142,7 @@ pipeline {
                 kubectl set image deployment/node-app \
                 node-app=$ECR_REPO:${BUILD_NUMBER} \
                 -n sonar-demo
-
+                kubectl rollout restart deployment/node-app -n sonar-demo
                 kubectl rollout status deployment/node-app -n sonar-demo
 
                 '''
