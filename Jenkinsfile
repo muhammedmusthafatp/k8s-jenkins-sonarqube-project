@@ -68,7 +68,7 @@ pipeline {
         --format XML \
         --format HTML \
         --out . \
-        --failOnCVSS 7
+        --failOnCVSS 7 \
         --noupdate
         '''
 
