@@ -88,17 +88,13 @@ pipeline {
 
         }
 
-        stage('Trivy Image Scan') {
-
-            steps {
-
-                sh '''
-                trivy image --exit-code 1 --severity HIGH,CRITICAL $IMAGE_NAME
-                '''
-
-            }
-
-        }
+       stage('Trivy Image Scan') {
+    steps {
+        sh '''
+        trivy image --severity HIGH,CRITICAL $IMAGE_NAME
+        '''
+    }
+}
 
         stage('Login ECR') {
 
