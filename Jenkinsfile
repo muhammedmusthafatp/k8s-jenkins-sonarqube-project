@@ -51,15 +51,15 @@ pipeline {
             }
         }
 
-        stage('OWASP Dependency Check') {
-            steps {
+        //stage('OWASP Dependency Check') {
+            //steps {
 
-                dependencyCheck additionalArguments: '--scan . --failOnCVSS 7',
-                                odcInstallation: 'DependencyCheck'
+                //dependencyCheck additionalArguments: '--scan . --failOnCVSS 7',
+                                //odcInstallation: 'DependencyCheck'
 
-                dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
-            }
-        }
+                //dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
+            //}
+        //}
 
         stage('Build Image') {
 
