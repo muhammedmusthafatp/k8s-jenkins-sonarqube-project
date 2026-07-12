@@ -69,6 +69,7 @@ pipeline {
         --format HTML \
         --out . \
         --failOnCVSS 7
+        --noupdate
         '''
 
         dependencyCheckPublisher pattern: 'dependency-check-report.xml'
