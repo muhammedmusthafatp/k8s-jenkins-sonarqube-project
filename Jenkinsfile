@@ -19,6 +19,13 @@ pipeline {
             }
         }
 
+        stage('Install Dependencies') {
+           steps {
+               sh '''
+               npm install
+            '''
+          }
+      }
         stage('Gitleaks Secret Detection') {
             steps {
                 sh '''
