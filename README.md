@@ -4,8 +4,6 @@ A production-style CI/CD pipeline that builds, security-scans, and deploys a Nod
 
 The pipeline enforces **quality and security gates** — it fails fast if code quality, secrets, dependency vulnerabilities, or container image vulnerabilities don't meet the defined thresholds, and only deploys once every gate passes.
 
-![CI/CD Pipeline Running](screenshots/applicationrunning.png)
-
 ---
 
 ## Architecture
@@ -77,7 +75,11 @@ Installs Node.js dependencies and runs a preliminary `npm audit`.
 ### 4 & 5. SonarQube Analysis + Quality Gate
 Runs static analysis against the SonarQube server and blocks the pipeline (`waitForQualityGate abortPipeline: true`) if the project doesn't meet the configured quality thresholds (bugs, code smells, coverage, duplications).
 
-![Quality Gate](screenshots/quality_gate.png)
+![Quality Gate](screenshots/quality gate.png)
+
+The project's overall SonarQube dashboard confirms a **Passed** Quality Gate — 0 Bugs, 0 Vulnerabilities, 100% Hotspots Reviewed, 0 Code Smells:
+
+![SonarQube Dashboard](screenshots/sonarqube-nodeappdemo.png)
 
 ### 6. OWASP Dependency-Check
 Scans project dependencies for known CVEs and fails the build if any dependency exceeds the configured CVSS score threshold (`--failOnCVSS 7`).
@@ -186,4 +188,3 @@ worker1   Ready    <none>          8d    v1.36.2
 Systems Engineer transitioning into DevOps | AWS · Kubernetes · Jenkins · Docker
 
 [GitHub Repository](https://github.com/muhammedmusthafatp/k8s-jenkins-sonarqube-project)
-
