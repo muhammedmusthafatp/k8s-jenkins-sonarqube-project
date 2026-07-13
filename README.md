@@ -40,7 +40,7 @@ Self-Managed Kubernetes Cluster (Kubespray)
 
 ## Tech Stack
 
-| Category            | Tool                                   |
+| Category             | Tool                                    |
 |----------------------|-----------------------------------------|
 | CI/CD Orchestration  | Jenkins (Declarative Pipeline)          |
 | Source Control       | GitHub                                  |
@@ -70,12 +70,12 @@ Scans the full commit history for hardcoded credentials, API keys, and tokens be
 ### 3. Install Dependencies
 Installs Node.js dependencies and runs a preliminary `npm audit`.
 
-![Install Dependencies](screenshots/install_dependency.png)
+![Install Dependencies](screenshots/install-dependency.png)
 
 ### 4 & 5. SonarQube Analysis + Quality Gate
 Runs static analysis against the SonarQube server and blocks the pipeline (`waitForQualityGate abortPipeline: true`) if the project doesn't meet the configured quality thresholds (bugs, code smells, coverage, duplications).
 
-![Quality Gate](screenshots/quality gate.png)
+![Quality Gate](screenshots/quality-gate.png)
 
 The project's overall SonarQube dashboard confirms a **Passed** Quality Gate — 0 Bugs, 0 Vulnerabilities, 100% Hotspots Reviewed, 0 Code Smells:
 
@@ -129,13 +129,13 @@ The application is successfully deployed and reachable via the cluster's NodePor
 
 ## Quality & Security Gates
 
-| Check                  | Tool                  | Failure Condition                          |
-|--------------------------|------------------------|---------------------------------------------|
-| Hardcoded secrets       | Gitleaks               | Any secret detected                          |
-| Code quality             | SonarQube               | Quality Gate status ≠ `OK`                   |
-| Dependency vulnerabilities | OWASP Dependency-Check | Any dependency with CVSS score ≥ 7           |
-| Container vulnerabilities | Trivy                  | Any `CRITICAL` or `HIGH` severity finding    |
-| Deployment health         | kubectl rollout status | Rollout does not complete within timeout — auto rollback |
+| Check                      | Tool                   | Failure Condition                                        |
+|----------------------------|------------------------|----------------------------------------------------------|
+| Hardcoded secrets          | Gitleaks               | Any secret detected                                      |
+| Code quality               | SonarQube              | Quality Gate status ≠ `OK`                               |
+| Dependency vulnerabilities | OWASP Dependency-Check | Any dependency with CVSS score ≥ 7                       |
+| Container vulnerabilities  | Trivy                  | Any `CRITICAL` or `HIGH` severity finding                |
+| Deployment health          | kubectl rollout status | Rollout does not complete within timeout — auto rollback |
 
 ---
 
@@ -143,14 +143,15 @@ The application is successfully deployed and reachable via the cluster's NodePor
 
 ```
 .
-├── Jenkinsfile                # Declarative pipeline: build, scan, deploy stages
-├── Dockerfile                 # Node.js application image
+├── Jenkinsfile                 # Declarative pipeline: build, scan, deploy stages
+├── Dockerfile                  # Node.js application image
 ├── k8s/
 │   ├── namespace.yml
-│   ├── deployment.yml         # RollingUpdate strategy
-│   └── service.yml            # NodePort service
-├── src/                       # Application source code
+│   ├── deployment.yml          # RollingUpdate strategy
+│   └── service.yml             # NodePort service
+├── server.js                   # Application source code
 ├── package.json
+├── sonar-project.properties    # SonarQube project config
 └── screenshots/                # Pipeline execution evidence
 ```
 
@@ -184,7 +185,7 @@ worker1   Ready    <none>          8d    v1.36.2
 
 ## Author
 
-**Muhammed Musthafa Thazhath Palangat**
-Systems Engineer transitioning into DevOps | AWS · Kubernetes · Jenkins · Docker
+**Muhammed Musthafa**
+DevOps Engineer | AWS · Kubernetes · Jenkins · Docker
 
 [GitHub Repository](https://github.com/muhammedmusthafatp/k8s-jenkins-sonarqube-project)
